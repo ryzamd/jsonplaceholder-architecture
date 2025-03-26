@@ -10,8 +10,8 @@ class DioClient {
   DioClient(this._dio, this._logger) {
     _dio.options
       ..baseUrl = ApiConstants.baseUrl
-      ..connectTimeout = Duration(milliseconds: ApiConstants.connectionTimeout)
-      ..receiveTimeout = Duration(microseconds: ApiConstants.receiveTimeout)
+      ..connectTimeout = Duration(seconds: ApiConstants.connectionTimeoutSeconds)
+      ..receiveTimeout = Duration(seconds: ApiConstants.receiveTimeoutSeconds)
       ..responseType = ResponseType.json;
 
     _dio.interceptors.add(
@@ -27,6 +27,7 @@ class DioClient {
     );
   }
 
+ /// Thực hiện HTTP GET request
   Future<dynamic> get(
     String uri, {
     Map<String, dynamic>? queryParameters,
@@ -42,13 +43,15 @@ class DioClient {
         cancelToken: cancelToken,
         onReceiveProgress: onReceiveProgress,
       );
-
+      
       return response.data;
     } on DioException catch (e) {
       _handleDioError(e);
     } catch (e) {
       _logger.e('GET request error: $e');
-      throw ServerException(message: "Error: Undefine when call Server");
+      throw ServerException(
+        message: 'Lỗi không xác định khi gọi API',
+      );
     }
   }
 

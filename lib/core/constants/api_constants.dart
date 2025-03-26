@@ -11,7 +11,11 @@ class ApiConstants {
   static const String todos = '/todos';
   static const String users = '/users';
   
-  /// Timeout duration cho các request (đơn vị: milliseconds)
-  static const int connectionTimeout = 30000;
-  static const int receiveTimeout = 30000;
+  /// Timeout duration cho các request
+  static const int connectionTimeoutSeconds = 30; // 30 giây
+  static const int receiveTimeoutSeconds = 30; // 30 giây
+  
+  /// Timeout duration (đơn vị: milliseconds) - giữ lại để tương thích
+  static const int connectionTimeout = 30000; // 30 giây
+  static const int receiveTimeout = 30000; // 30 giây
 }

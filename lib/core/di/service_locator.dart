@@ -4,6 +4,16 @@ import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:jsonplaceholder_app/core/network/dio_client.dart';
 import 'package:jsonplaceholder_app/core/network/network_info.dart';
+import 'package:jsonplaceholder_app/features/posts/data/datasources/post_remote_data_source.dart';
+import 'package:jsonplaceholder_app/features/posts/data/repositories/post_repository_impl.dart';
+import 'package:jsonplaceholder_app/features/posts/domain/repositories/post_repository.dart';
+import 'package:jsonplaceholder_app/features/posts/domain/usecases/create_post.dart';
+import 'package:jsonplaceholder_app/features/posts/domain/usecases/delete_post.dart';
+import 'package:jsonplaceholder_app/features/posts/domain/usecases/get_post_by_user.dart';
+import 'package:jsonplaceholder_app/features/posts/domain/usecases/get_post_detail.dart';
+import 'package:jsonplaceholder_app/features/posts/domain/usecases/get_posts.dart';
+import 'package:jsonplaceholder_app/features/posts/domain/usecases/update_post.dart';
+import 'package:jsonplaceholder_app/features/posts/persentations/bloc/post_bloc.dart';
 import 'package:logger/web.dart';
 
 
@@ -41,7 +51,39 @@ Future<void> initAllDependencies() async {
 
 // Khởi tạo dependencies cho feature Posts
 Future<void> _initPostsFeature() async {
-  // Các dependencies sẽ được thêm sau khi triển khai feature
+
+  //Data Source
+  sl.registerLazySingleton<PostRemoteDataSource>(
+    () => PostRemoteDataSourceImplement(dioClient: sl())
+  );
+
+  //Repositories
+  sl.registerLazySingleton<PostRepository>(
+    () => PostRepositoryImpl(
+      networkInfo: sl(),
+      postRemoteDataSource: sl()
+    )
+  );
+
+  //Usecases
+  sl.registerLazySingleton(() => GetPosts(repository: sl()));
+  sl.registerLazySingleton(() => GetPostByUser(repository: sl()));
+  sl.registerLazySingleton(() => GetPostDetail(repository: sl()));
+  sl.registerLazySingleton(() => CreatePost(repository: sl()));
+  sl.registerLazySingleton(() => UpdatePost(repository: sl()));
+  sl.registerLazySingleton(() => DeletePost(repository: sl()));
+
+  //BloC
+  sl.registerFactory(
+    () => PostBloc(
+      getPosts: sl(),
+      getPostByUser: sl(),
+      getPostDetail: sl(),
+      createPost: sl(),
+      updatePost: sl(),
+      deletePost: sl(),
+    )
+  );
 }
 
 /// Khởi tạo dependencies cho feature Comments
