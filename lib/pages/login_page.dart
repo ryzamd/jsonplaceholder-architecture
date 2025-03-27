@@ -1,5 +1,6 @@
 // lib/pages/login_page.dart
 import 'package:flutter/material.dart';
+import 'package:jsonplaceholder_app/common/routes/app_routes.dart';
 import '../widgets/custom_text_field.dart';
 import '../widgets/logo_widget.dart';
 import '../widgets/gradient_button.dart';
@@ -60,7 +61,10 @@ class LoginPage extends StatelessWidget {
                             buildGradientButton(
                               text: '登录',
                               onPressed: () {
-                                // Xử lý sự kiện đăng nhập
+                                Navigator.pushReplacementNamed(
+                                  context,
+                                  AppRoutes.processing,
+                                );
                               },
                               width: double.infinity,
                             ),
