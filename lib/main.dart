@@ -1,6 +1,6 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:jsonplaceholder_app/pages/qr_scan_page.dart';
 import 'pages/login_page.dart';
 import 'pages/processing_page.dart';
 import 'common/routes/app_routes.dart';
@@ -8,16 +8,11 @@ import 'common/constants/app_colors.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      statusBarColor: AppColors.primary,
-      statusBarIconBrightness: Brightness.light,
-    ),
-  );
+  
+  // Tối ưu hóa bộ nhớ đệm hình ảnh
+  PaintingBinding.instance.imageCache.maximumSize = 100;
+  PaintingBinding.instance.imageCache.maximumSizeBytes = 50 * 1024 * 1024; // 50MB
+  
   runApp(const MyApp());
 }
 
@@ -31,6 +26,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: AppColors.primary,
+        fontFamily: 'Poppins', // Sử dụng font Poppins
         colorScheme: ColorScheme.fromSwatch().copyWith(
           primary: AppColors.primary,
           secondary: AppColors.accent,
@@ -52,9 +48,10 @@ class MyApp extends StatelessWidget {
           headlineMedium: TextStyle(
             color: AppColors.textPrimary,
             fontWeight: FontWeight.bold,
+            fontFamily: 'Poppins',
           ),
-          bodyLarge: TextStyle(color: AppColors.textPrimary),
-          bodyMedium: TextStyle(color: AppColors.textSecondary),
+          bodyLarge: TextStyle(color: AppColors.textPrimary, fontFamily: 'Poppins'),
+          bodyMedium: TextStyle(color: AppColors.textSecondary, fontFamily: 'Poppins'),
         ),
         scaffoldBackgroundColor: AppColors.scaffoldBackground,
         dividerTheme: const DividerThemeData(
@@ -66,7 +63,13 @@ class MyApp extends StatelessWidget {
       routes: {
         AppRoutes.login: (context) => const LoginPage(),
         AppRoutes.processing: (context) => const ProcessingPage(),
-        // Add other routes here as you create them
+        AppRoutes.scan: (context) => const QRScanPage()
+      },
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(1.0)),
+          child: child!,
+        );
       },
     );
   }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 Widget buildLogoWidget() {
   return Column(
@@ -29,14 +28,12 @@ Widget buildLogoWidget() {
       const SizedBox(height: 16),
       Text(
         'PRO WELL',
-        style: GoogleFonts.poppins(
-          fontStyle: FontStyle.italic,
-          textStyle: TextStyle(
+        style: TextStyle(
             color: Color(0xFFFFFFFF),
             fontSize: 30,
-            fontWeight: FontWeight.bold
-          )
-        ),
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Poppins'
+        )
       ),
     ],
   );

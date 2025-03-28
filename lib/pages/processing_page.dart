@@ -11,10 +11,14 @@ class ProcessingPage extends StatelessWidget {
     return CustomScaffold(
       title: 'PROCESSING',
       currentIndex: 0, // Assuming this is the home tab
-      backgroundColor: Colors.transparent,
-      body: Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: ProcessingDataTable(),
+      body: Card(
+        margin: const EdgeInsets.all(8.0),
+        elevation: 8,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: const ProcessingDataTable(),
+        ),
       ),
       actions: [
         IconButton(

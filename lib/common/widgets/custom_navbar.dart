@@ -27,14 +27,14 @@ class CustomNavBar extends StatelessWidget {
                 icon: Icons.home_outlined,
                 selectedIcon: Icons.home,
                 index: 0,
-                route: AppRoutes.home,
+                route: AppRoutes.processing,
               ),
               _buildNavItem(
                 context,
                 icon: Icons.work_rounded,
                 selectedIcon: Icons.work_rounded,
                 index: 1,
-                route: AppRoutes.scanning,
+                route: AppRoutes.scan,
                 badge: true,
               ),
               _buildNavItem(
@@ -65,7 +65,10 @@ class CustomNavBar extends StatelessWidget {
     return InkWell(
       onTap: () {
         if (!isSelected) {
-          Navigator.pushReplacementNamed(context, route);
+          Navigator.of(context).pushNamedAndRemoveUntil(
+            route,
+            (r) => false,  // Remove all previous routes
+          );
         }
       },
       child: Padding(

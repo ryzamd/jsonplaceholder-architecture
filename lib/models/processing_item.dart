@@ -1,9 +1,16 @@
+enum SignalStatus {
+  pending,
+  success,
+  failed
+}
+
 class ProcessingItem {
   final String itemName;
   final String orderNumber;
   final int quantity;
   final int exception;
   final String timestamp;
+  final SignalStatus status;
 
   ProcessingItem({
     required this.itemName,
@@ -11,6 +18,7 @@ class ProcessingItem {
     required this.quantity,
     required this.exception,
     required this.timestamp,
+    required this.status,
   });
 
   factory ProcessingItem.fromJson(Map<String, dynamic> json) {
@@ -20,6 +28,7 @@ class ProcessingItem {
       quantity: json['quantity'] ?? 0,
       exception: json['exception'] ?? 0,
       timestamp: json['timestamp'] ?? '',
+      status: _parseStatus(json['status']),
     );
   }
 
@@ -30,6 +39,13 @@ class ProcessingItem {
       'quantity': quantity,
       'exception': exception,
       'timestamp': timestamp,
+      'status': status.toString().split('.').last,
     };
+  }
+
+  static SignalStatus _parseStatus(String? status) {
+    if (status == 'success') return SignalStatus.success;
+    if (status == 'failed') return SignalStatus.failed;
+    return SignalStatus.pending;
   }
 }
